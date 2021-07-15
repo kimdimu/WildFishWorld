@@ -15,6 +15,7 @@ public class FishStat
 {
     int hp;
     int love;
+    int loveLevel;
     int full;
     int giveMoney;
     int life;
