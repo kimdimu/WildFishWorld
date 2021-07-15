@@ -243,6 +243,8 @@ public class FIshSteeringBehavior
 
         return sforce;
     }
+
+
     void CreateFeelers()
     {
         feeler[0] = owner.transform.forward;
@@ -266,7 +268,7 @@ public class FIshSteeringBehavior
   //  }
     //Vector2 WallAvoidance(Vector2[] walls)
     //{
-        Vector3 sforce = new Vector3();
+        //Vector3 sforce = new Vector3();
 
         //// 촉수는 std::vector 내에, m_Feelers로 포함되어 있다.
         //CreateFeelers();
