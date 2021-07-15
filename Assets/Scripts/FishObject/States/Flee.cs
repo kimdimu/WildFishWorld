@@ -2,17 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flee : MonoBehaviour
+public class Flee : State<Fish>
 {
-    // Start is called before the first frame update
-    void Start()
+    static private Flee instance = null;
+    static public Flee Instance
     {
-        
+        get
+        {
+            if (instance == null)
+            {
+                GameObject container = new GameObject();
+                container.name = "FleeC";
+                instance = container.AddComponent(typeof(Flee)) as Flee;
+            }
+            return instance;
+        }
+        set
+        {
+            instance = value;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter(Fish fish)
     {
-        
+        Debug.Log("Enter Flee");
+    }
+    public override void Execute(Fish player)
+    {
+        player.GetFSM().ChangeState(Wander.Instance);
+    }
+    public override void Exit(Fish player)
+    {
     }
 }

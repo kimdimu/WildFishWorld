@@ -66,10 +66,12 @@
     <Compile Include="Assets\Scripts\FishObject\Fish.cs" />
     <Compile Include="Assets\Scripts\FishObject\FishStat.cs" />
     <Compile Include="Assets\Scripts\FishObject\FishStateMachine.cs" />
+    <Compile Include="Assets\Scripts\FishObject\MovingEntity.cs" />
     <Compile Include="Assets\Scripts\FishObject\State.cs" />
     <Compile Include="Assets\Scripts\FishObject\States\Attack.cs" />
     <Compile Include="Assets\Scripts\FishObject\States\Flee.cs" />
     <Compile Include="Assets\Scripts\FishObject\States\Wander.cs" />
+    <Compile Include="Assets\Scripts\Wall\Wall.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.26f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

@@ -20,6 +20,7 @@ public class FIshSteeringBehavior
     Vector3 wanderTarget; //무작위변위를 더할 벡터
     float playerAngle;
     float angleGoal;
+    Vector2 heading;
 
     float time; //시간
     bool isReady; //공격준비상태인가?
@@ -36,6 +37,12 @@ public class FIshSteeringBehavior
     {
         this.owner = new Fish();
         this.owner = owner;
+    }
+    public void SetWander(float rad, float dist, float jit)
+    {
+        wanderRadius = rad;
+        wanderDist = dist;
+        wanderJitter = jit;
     }
     public void FleeOn() { OnState[(int)SteeringState.FLEE] = true; }
     public void SeekOn() { OnState[(int)SteeringState.SEEK] = true; }
@@ -115,8 +122,8 @@ public class FIshSteeringBehavior
     }
     Vector3 Wander()
     {
-        float difference;
         time -= Time.deltaTime;
+        //heading = new Vector2(owner.transform.position.x,owner.transform.position.y).normalized;
         if (time < 0f)
         {
             //Debug.Log("초기화~ 단번에 늒껴");
@@ -129,25 +136,14 @@ public class FIshSteeringBehavior
             wanderTarget.Normalize();
             wanderTarget *= wanderRadius;
 
-            playerAngle = owner.transform.eulerAngles.y;
-            // Debug.Log(playerAngle);
-            angleGoal = Mathf.Pow(Random.Range(0.0f, 90f), 2);
-            time = 2;
-        }
-        difference = owner.transform.eulerAngles.y - playerAngle;
-        if (difference > 180)
-        {
-            difference = 360 - difference;
-        }
-        if (Mathf.Pow(difference, 2) >= angleGoal)
-        {
-            return zero;
+            //playerAngle = owner.transform.eulerAngles.y;
+            time = Random.Range(2,8 );
         }
 
         //반지름에 맞춘 위치에 현재 보고있는 방향 * 투사 거리만큼 더해준다. + 현재 위치 더해서 월드 좌표로 옮기기
         target.x = wanderTarget.x + owner.transform.position.x + owner.transform.forward.x * wanderDist;
-        target.y = owner.transform.position.y;
-        target.z = wanderTarget.z + owner.transform.position.z + owner.transform.forward.z * wanderDist;
+        target.y = wanderTarget.z + owner.transform.position.z + owner.transform.forward.z * wanderDist;
+        //target.z = wanderTarget.z + owner.transform.position.z + owner.transform.forward.z * wanderDist;
         //그 쪽으로 간다.
         Vector3 Velo = (target - owner.transform.position).normalized;
         return Velo;
@@ -240,51 +236,69 @@ public class FIshSteeringBehavior
         }
         return sforce;
     }
+    Vector2 WallAvoidance(Vector2[] walls)
+    {
+        Vector3 sforce = new Vector3();
+
+
+        return sforce;
+    }
     void CreateFeelers()
     {
         feeler[0] = owner.transform.forward;
+
         feeler[1].x = feeler[0].x*Mathf.Cos(45) - feeler[0].z*Mathf.Sin(45);
-        feeler[2].z = feeler[0].x * Mathf.Sin(45) + feeler[0].z * Mathf.Cos(45);
+        feeler[1].z = feeler[0].x * Mathf.Sin(45) + feeler[0].z * Mathf.Cos(45);
+
+        feeler[2].x = feeler[0].x * Mathf.Cos(-45) - feeler[0].z * Mathf.Sin(-45);
+        feeler[2].z = feeler[0].x * Mathf.Sin(-45) + feeler[0].z * Mathf.Cos(-45);
     }
     bool LineIntersection2D(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
     {
-        float firstCCW =
+        //float firstCCW =
 
 
         return false;
     }
-    int CCW(Vector2 a, Vector2 b, Vector2 c)
-    {
+    //int CCW(Vector2 a, Vector2 b, Vector2 c)
+    //{
 
-    }
-    Vector2 WallAvoidance(Vector2[] walls)
-    {
-        // 촉수는 std::vector 내에, m_Feelers로 포함되어 있다.
-        CreateFeelers();
-        double DistToThisIP = 0.0;
-        double DistToClosestIP = MaxDouble;
-        int ClosestWall = -1; // 이것은 벽 벡터들의 색인을 보유할 것이다.
-        Vector2 SteeringForce, point, /*일시적인 정보 저장*/ ClosestPoint; /*최근접교차점*/
-                                                                    // 각 촉수를 차례로 조사한다.
-        for (int flr = 0; flr < feeler.Length; ++flr) {
-            //교차하는 점들이 하나라도 있는지 확인하면서 각 벽을 조사
-            for (int w = 0; w < walls.size(); ++w) {
-                if (LineIntersection2D(m_pVehiclePos(), feeler[flr], walls[w].From(), Walls[w].To(),
-                DistToThisIP, point)) {
-                    //이것이 지금까지 발견된 것들 중 가장 근접한 것이라면, 기록을 유지한다.
-                    if (DistToThisIP < DistToClosestIP) {
-                        DistToClosestIP = DistToThisIP; ClosestWall = w;
-                        ClosestPoint = point;
-                    }
-                }
-            } //다음 벽// 교차점이 감지되었다면, 에이전트를 멀어지는 쪽으로 향하게 해줄 힘을 계산한다.
-            if (ClosestWall >= 0) {
-                //에이전트가 어떤 거리에서 투사한 위치가 벽을 지나치게 되는지를 계산한다.
-                Vector2 OverShoot = feeler[flr] – ClosestPoint;
-                //지나쳐버린 크기와 함께, 벽의 법선방향으로의 힘을 생성
-                SteeringForce = walls[ClosestWall].Normal() * OverShoot.magnitude;
-            }
-        } //다음 촉수
-        return SteeringForce;
-    }
+  //  }
+    //Vector2 WallAvoidance(Vector2[] walls)
+    //{
+        Vector3 sforce = new Vector3();
+
+        //// 촉수는 std::vector 내에, m_Feelers로 포함되어 있다.
+        //CreateFeelers();
+        //float DistToThisIP = 0.0f;
+
+
+        //float DistToClosestIP = 10000f;
+        //int ClosestWall = -1; // 이것은 벽 벡터들의 색인을 보유할 것이다.
+        //Vector2 SteeringForce, point, /*일시적인 정보 저장*/ ClosestPoint; /*최근접교차점*/
+        ////                                                            // 각 촉수를 차례로 조사한다.
+        //for (int flr = 0; flr < feeler.Length; ++flr) {
+        //    //교차하는 점들이 하나라도 있는지 확인하면서 각 벽을 조사
+        //    for (int w = 0; w < walls.size(); ++w) {
+        ////        if (LineIntersection2D(m_pVehiclePos(), feeler[flr], walls[w].From(), Walls[w].To(),
+        ////        DistToThisIP, point)) {
+        ////            //이것이 지금까지 발견된 것들 중 가장 근접한 것이라면, 기록을 유지한다.
+        ////            if (DistToThisIP < DistToClosestIP) {
+        ////                DistToClosestIP = DistToThisIP; ClosestWall = w;
+        ////                ClosestPoint = point;
+        ////            }
+        ////        }
+        ////    } //다음 벽// 교차점이 감지되었다면, 에이전트를 멀어지는 쪽으로 향하게 해줄 힘을 계산한다.
+        ////    if (ClosestWall >= 0) {
+        ////        //에이전트가 어떤 거리에서 투사한 위치가 벽을 지나치게 되는지를 계산한다.
+        ////        Vector2 OverShoot = feeler[flr] – ClosestPoint;
+        ////        //지나쳐버린 크기와 함께, 벽의 법선방향으로의 힘을 생성
+        ////        SteeringForce = walls[ClosestWall].Normal() * OverShoot.magnitude;
+        //    }
+        //} //다음 촉수
+        ////return SteeringForce;
+       // return sforce;
+   // }
+
+
 }

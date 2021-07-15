@@ -2,17 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wander : MonoBehaviour
+public class Wander : State<Fish>
 {
-    // Start is called before the first frame update
-    void Start()
+    static private Wander instance = null;
+    static public Wander Instance
     {
-        
+        get
+        {
+            if (instance == null)
+            {
+                GameObject container = new GameObject();
+                container.name = "WanderC";
+                instance = container.AddComponent(typeof(Wander)) as Wander;
+            }
+            return instance;
+        }
+        set
+        {
+            instance = value;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter(Fish fish)
     {
-        
+        Debug.Log("Enter Wander");
+        fish.fIshSteeringBehavior.WanderOn();
+    }
+    public override void Execute(Fish fish)
+    {
+        //fish.GetFSM().ChangeState(Flee.Instance);
+    }
+    public override void Exit(Fish fish)
+    {
+        fish.fIshSteeringBehavior.WanderOff();
     }
 }
